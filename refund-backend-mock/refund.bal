@@ -41,7 +41,7 @@ function main(string... args) {
 function generateRefund() returns error? {
 
     int refundId = math:randomInRange(1,10000);
-    string refundName = "ZECOMM" + refundId;
+    string refundName = "ZECOMMCREDITMEMO" + refundId;
     log:printInfo("Generating refund : " + refundName);
 
     xml refunds = xml `<ZECOMMCREDITMEMO>
