@@ -5,8 +5,8 @@ metadata:
   annotations: {}
   finalizers: []
   labels:
-    app: "refund-mock"
-  name: "refund-mock-deployment"
+    app: "refund-backend-mock"
+  name: "refund-backend-mock-deployment"
   namespace: "default"
   ownerReferences: []
 spec:
@@ -16,7 +16,7 @@ spec:
       annotations: {}
       finalizers: []
       labels:
-        app: "refund-mock"
+        app: "refund-backend-mock"
       ownerReferences: []
     spec:
       containers:
@@ -24,12 +24,10 @@ spec:
         command: []
         env: []
         envFrom: []
-        image: "rajkumar/refund-data-service:0.1.0"
+        image: "rajkumar/refund-backend-mock:0.1.0"
         imagePullPolicy: "IfNotPresent"
-        name: "refund-data-service-deployment"
-        ports:       
-        - containerPort: 8280
-          name: http         
+        name: "refund-backend-mock-deployment"
+        ports:             
         volumeMounts: []
       hostAliases: []
       imagePullSecrets: []
