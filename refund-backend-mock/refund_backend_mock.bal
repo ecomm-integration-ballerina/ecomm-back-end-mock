@@ -6,6 +6,7 @@ import ballerina/runtime;
 import ballerina/log;
 import ballerina/http;
 import ballerina/config;
+import ballerinax/kubernetes;
 
 int count;
 task:Timer? timer;
