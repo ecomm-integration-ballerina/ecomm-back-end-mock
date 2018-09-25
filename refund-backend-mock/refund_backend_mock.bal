@@ -13,12 +13,12 @@ task:Timer? timer;
 
 endpoint ftp:Client refundSFTPClient {
     protocol: ftp:SFTP,
-    host: config:getAsString("ecomm-backend.refund.sftp.host"),
-    port: config:getAsInt("ecomm-backend.refund.sftp.port"),
+    host: config:getAsString("ecomm_backend.refund.sftp.host"),
+    port: config:getAsInt("ecomm_backend.refund.sftp.port"),
     secureSocket: {
         basicAuth: {
-            username: config:getAsString("ecomm-backend.refund.sftp.username"),
-            password: config:getAsString("ecomm-backend.refund.sftp.password")
+            username: config:getAsString("ecomm_backend.refund.sftp.username"),
+            password: config:getAsString("ecomm_backend.refund.sftp.password")
         }
     }
 };
@@ -28,8 +28,8 @@ function main(string... args) {
     (function() returns error?) onTriggerFunction = generateRefund;
     function(error) onErrorFunction = handleError;
 
-    int interval = config:getAsInt("ecomm-backend.refund.etl.interval");
-    int delay = config:getAsInt("ecomm-backend.refund.etl.initialDelay");
+    int interval = config:getAsInt("ecomm_backend.refund.etl.interval");
+    int delay = config:getAsInt("ecomm_backend.refund.etl.initialDelay");
 
     timer = new task:Timer(onTriggerFunction, onErrorFunction,
         interval, delay = delay);
@@ -105,7 +105,7 @@ function generateRefund() returns error? {
     string refundAsString = <string> refunds;
     io:println(refundAsString);
     io:ByteChannel bchannel = io:createMemoryChannel(refundAsString.toByteArray("UTF-8"));
-    string path = config:getAsString("ecomm-backend.refund.sftp.path") + "/original/" + refundName + ".xml";
+    string path = config:getAsString("ecomm_backend.refund.sftp.path") + "/original/" + refundName + ".xml";
 
     log:printInfo("Uploading refund : " + refundName + " to sftp");
     error? filePutErr = refundSFTPClient -> put(path, bchannel);

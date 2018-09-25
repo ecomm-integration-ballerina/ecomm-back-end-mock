@@ -22,9 +22,23 @@ spec:
       containers:
       - args: []
         command: []
-        env: []
+        env:
+          - name: ecomm_backend_refund_sftp_host
+            value: "refund-sftp-headless-service.default.svc.cluster.local"
+          - name: ecomm_backend_refund_sftp_port
+            value: "22"    
+          - name: ecomm_backend_refund_sftp_username
+            value: "ecomm0xxx" 
+          - name: ecomm_backend_refund_sftp_password
+            value: "ec0mmoxxx" 
+          - name: ecomm_backend_refund_sftp_path
+            value: "/Users/ecomm0xxx/projects/ecomm/sftp/refund"     
+          - name: ecomm_backend_refund_etl_interval
+            value: "10000" 
+          - name: ecomm_backend_refund_etl_initialDelay
+            value: "500"                  
         envFrom: []
-        image: "rajkumar/refund-backend-mock:0.1.0"
+        image: "rajkumar/refund-backend-mock:0.6.0"
         imagePullPolicy: "IfNotPresent"
         name: "refund-backend-mock-deployment"
         ports:             
