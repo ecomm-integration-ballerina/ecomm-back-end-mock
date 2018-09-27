@@ -20,14 +20,14 @@ steps:
     type: build
     image_name: rajkumar/refund-backend-mock
     working_directory: ./
-    tag: 0.1.2
+    tag: 0.1.3
     dockerfile: refund-backend-mock/docker/Dockerfile
 
   push_image:
     title: Pushing to Docker Registry
     type: push
     candidate: '${{build_image}}'
-    tag: 0.1.2
+    tag: 0.1.3
     registry: dockerhub
 
   deploy_to_k8s:

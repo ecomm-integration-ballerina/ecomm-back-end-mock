@@ -116,7 +116,7 @@ function generateRefund() returns error? {
                 + " from refundSFTPClient : " + err.message, err = err);
         }
         () => {
-            log:printError("Uploaded refund : " + refundName + " to sftp");           
+            log:printInfo("Uploaded refund : " + refundName + " to sftp");           
         }
     }
 
