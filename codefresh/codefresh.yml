@@ -10,8 +10,10 @@ steps:
     image: ballerina/ballerina-platform:0.981.1
     fail_fast: true
     commands:
-    - ballerina init
-    - ballerina build refund-backend-mock
+      - cp -r refund-backend-mock/dependencies/packages/dependencies/* /ballerina/runtime/bre/lib/
+      - cp -r refund-backend-mock/dependencies/packages/balo/* /ballerina/runtime/lib/repo/
+      - ballerina init
+      - ballerina build refund-backend-mock
 
   build_image:
     title: Building Docker Image
