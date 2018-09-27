@@ -33,12 +33,12 @@ spec:
                 name: ecomm-back-end-sftp-secret
                 key: username 
           - name: ecomm_backend_refund_sftp_password
-              valueFrom:
+            valueFrom:
                 secretKeyRef:
                   name: ecomm-back-end-sftp-secret
                   key: password 
           - name: ecomm_backend_refund_sftp_path
-              valueFrom:
+            valueFrom:
                 secretKeyRef:
                   name: ecomm-back-end-sftp-secret
                   key: path    
