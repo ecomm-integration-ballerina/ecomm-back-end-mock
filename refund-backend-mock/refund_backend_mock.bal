@@ -110,6 +110,16 @@ function generateRefund() returns error? {
     log:printInfo("Uploading refund : " + refundName + " to sftp");
     error? filePutErr = refundSFTPClient -> put(path, bchannel);
 
+    match filePutErr {
+        error err => {
+            log:printError("Error while uploading refund : " + refundName 
+                + " from refundSFTPClient : " + err.message, err = err);
+        }
+        () => {
+            log:printError("Uploaded refund : " + refundName + " to sftp");           
+        }
+    }
+
     return ();
 }
 

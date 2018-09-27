@@ -47,7 +47,7 @@ spec:
           - name: ecomm_backend_refund_etl_initialDelay
             value: "500"                  
         envFrom: []
-        image: "rajkumar/refund-backend-mock:0.1.0"
+        image: "rajkumar/refund-backend-mock:0.1.1"
         imagePullPolicy: "IfNotPresent"
         name: "refund-backend-mock-deployment"
         ports:             
