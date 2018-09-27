@@ -1,0 +1,60 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  annotations: {}
+  finalizers: []
+  labels:
+    app: "ecomm-back-end-mock"
+  name: "ecomm-back-end-mock-deployment"
+  namespace: "default"
+  ownerReferences: []
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations: {}
+      finalizers: []
+      labels:
+        app: "refund-backend-mock"
+      ownerReferences: []
+    spec:
+      containers:
+      - args: []
+        command: []
+        env:
+          - name: ecomm_backend_refund_sftp_host
+            value: "refund-sftp-headless-service.default.svc.cluster.local"
+          - name: ecomm_backend_refund_sftp_port
+            value: "22"    
+          - name: ecomm_backend_refund_sftp_username
+            valueFrom:
+              secretKeyRef:
+                name: ecomm-back-end-sftp-secret
+                key: username 
+          - name: ecomm_backend_refund_sftp_password
+              valueFrom:
+                secretKeyRef:
+                  name: ecomm-back-end-sftp-secret
+                  key: password 
+          - name: ecomm_backend_refund_sftp_path
+              valueFrom:
+                secretKeyRef:
+                  name: ecomm-back-end-sftp-secret
+                  key: path    
+          - name: ecomm_backend_refund_etl_interval
+            value: "10000" 
+          - name: ecomm_backend_refund_etl_initialDelay
+            value: "500"                  
+        envFrom: []
+        image: "rajkumar/refund-backend-mock:0.1.0"
+        imagePullPolicy: "IfNotPresent"
+        name: "refund-backend-mock-deployment"
+        ports:             
+        volumeMounts: []
+      hostAliases: []
+      imagePullSecrets: []
+      initContainers: []
+      nodeSelector: {}
+      tolerations: []
+      volumes: []
