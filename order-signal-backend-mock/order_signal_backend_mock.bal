@@ -22,7 +22,7 @@ endpoint ftp:Client orderSignalSFTPClient {
     }
 };
 
-function main(string... args) {
+public function main(string... args) {
 
     (function() returns error?) onTriggerFunction = generateOrderSignal;
     function(error) onErrorFunction = handleError;
@@ -138,8 +138,7 @@ function generateOrderSignal() returns error? {
 
     xml children = orderSignals.selectDescendants("IDOC").* + orderDataHeader;
     orderSignals.selectDescendants("IDOC").setChildren(children);
-
-    io:println(orderSignals);
+    
     // uploading order-signal to SFTP
     string orderSignalAsString = <string> orderSignals;
     io:ByteChannel bchannel = io:createMemoryChannel(orderSignalAsString.toByteArray("UTF-8"));
