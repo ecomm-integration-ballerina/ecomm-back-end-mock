@@ -10,6 +10,8 @@ import ballerina/config;
 int count;
 task:Timer? timer;
 
+string[] signals = ["OPEN", "MAKE", "NOT_SHIPPE", "SHIPPED"];
+
 endpoint ftp:Client orderSignalSFTPClient {
     protocol: ftp:SFTP,
     host: config:getAsString("ecomm_backend.order_signal.sftp.host"),
@@ -44,6 +46,8 @@ function generateOrderSignal() returns error? {
     string orderSignalName = "ZECOMMSTAT" + orderSignalId;
     log:printInfo("Generating order-signal : " + orderSignalName);
 
+    string signal = signals[math:randomInRange(0,3)];
+
     xml orderSignals = xml `<ZECOMMSTAT>
             <IDOC BEGIN="1">
             </IDOC>
@@ -76,12 +80,12 @@ function generateOrderSignal() returns error? {
 
     xml orderDataHeader = xml `<ZECOMMEDK01 SEGMENT="1">
             <ZCONID>27b032daba6f8d645b35db07b2abaf64</ZCONID>
-            <BELNR>100373835557-28989075000</BELNR>
+            <BELNR>ballerina-{{math:randomInRange(1,1000)}}</BELNR>
             <ZDATE>20181005T033457</ZDATE>
-            <OBELNR>100373835557-28989075000</OBELNR>
+            <OBELNR>ballerina-{{math:randomInRange(1,1000)}}</OBELNR>
             <CURCY>USD</CURCY>
             <ZORDST>COMPLETED</ZORDST>
-            <ZSHIPST>SHIPPED</ZSHIPST>
+            <ZSHIPST>{{signal}}</ZSHIPST>
             <ZMFGSO>4218076063</ZMFGSO>
             <ZMFGCU>MBGB2CUSEB</ZMFGCU>
         </ZECOMMEDK01>`;
@@ -106,15 +110,15 @@ function generateOrderSignal() returns error? {
                 <ZPROID>01110NARTL</ZPROID>
                 <ZSSD>Null</ZSSD>
                 <ZLINENO>    0</ZLINENO>
-                <ZSHIPST>SHIPPED</ZSHIPST>
+                <ZSHIPST>{{signal}}</ZSHIPST>
             </ZECOMMEDP01>`;
 
         productLineItemArray[i-1] = productLineItem;
 
         xml shipment = xml `<ZECOMMEDK02 SEGMENT="1">
             <ZSHIPID>1</ZSHIPID>
-            <ZORDST>SHIPPED</ZORDST>
-            <ZSHIPST>SHIPPED</ZSHIPST>
+            <ZORDST>{{signal}}</ZORDST>
+            <ZSHIPST>{{signal}}</ZSHIPST>
             <ZSMETHOD>UPB</ZSMETHOD>
             <ZTRACKNO>{{math:randomInRange(1,1000000)}}</ZTRACKNO>
             <ZCARRIER>UPS</ZCARRIER>
