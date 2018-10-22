@@ -6,55 +6,36 @@ import ballerina/runtime;
 import ballerina/log;
 import ballerina/http;
 import ballerina/config;
-import ballerinax/kubernetes;
-import ballerinax/docker;
 
 int count;
 task:Timer? timer;
 
 endpoint ftp:Client invoiceSFTPClient {
     protocol: ftp:SFTP,
-    host: config:getAsString("ecomm-backend.invoice.sftp.host"),
-    port: config:getAsInt("ecomm-backend.invoice.sftp.port"),
+    host: config:getAsString("ecomm_backend.invoice.sftp.host"),
+    port: config:getAsInt("ecomm_backend.invoice.sftp.port"),
     secureSocket: {
         basicAuth: {
-            username: config:getAsString("ecomm-backend.invoice.sftp.username"),
-            password: config:getAsString("ecomm-backend.invoice.sftp.password")
+            username: config:getAsString("ecomm_backend.invoice.sftp.username"),
+            password: config:getAsString("ecomm_backend.invoice.sftp.password")
         }
     }
 };
 
-//@docker:CopyFiles {
-//    files: [
-//        {
-//            source: "ballerina.conf",
-//            target: "/home/ballerina/ballerina.conf", isBallerinaConf: true
-//        },
-//        {
-//            source: "/Library/Ballerina/ballerina-0.981.1/bre/lib/wso2-ftp-package-0.97.4.jar",
-//            target: "/ballerina/ballerina-0.981.1/bre/lib/wso2-ftp-package-0.97.4.jar"
-//        },
-//        {
-//            source: "/Library/Ballerina/ballerina-0.981.1/lib/repo/wso2/ftp/0.0.0/ftp.zip",
-//            target: "/ballerina/ballerina-0.981.1/lib/repo/wso2/ftp/0.0.0/ftp.zip"
-//        }
-//    ]
-//}
-@kubernetes:Job {}
-function main(string... args) {
+public function main(string... args) {
 
     (function() returns error?) onTriggerFunction = generateInvoice;
     function(error) onErrorFunction = handleError;
 
-    int interval = config:getAsInt("ecomm-backend.invoice.etl.interval");
-    int delay = config:getAsInt("ecomm-backend.invoice.etl.initialDelay");
+    int interval = config:getAsInt("ecomm_backend.invoice.etl.interval");
+    int delay = config:getAsInt("ecomm_backend.invoice.etl.initialDelay");
 
     timer = new task:Timer(onTriggerFunction, onErrorFunction,
         interval, delay = delay);
 
     timer.start();
     // temp hack to keep the process running
-    runtime:sleep(20000000);
+    runtime:sleep(2000000000);
 }
 
 function generateInvoice() returns error? {
@@ -114,10 +95,20 @@ function generateInvoice() returns error? {
     // uploading invoices to SFTP
     string invoiceAsString = <string> invoices;
     io:ByteChannel bchannel = io:createMemoryChannel(invoiceAsString.toByteArray("UTF-8"));
-    string path = config:getAsString("ecomm-backend.invoice.sftp.path") + "/original/" + invoiceName + ".xml";
+    string path = config:getAsString("ecomm_backend.invoice.sftp.path") + "/original/" + invoiceName + ".xml";
 
     log:printInfo("Uploading invoice : " + invoiceName + " to sftp");
     error? filePutErr = invoiceSFTPClient -> put(path, bchannel);
+
+    match filePutErr {
+        error err => {
+            log:printError("Error while uploading invoice : " + invoiceName 
+                + " from refundSFTPClient : " + err.message, err = err);
+        }
+        () => {
+            log:printInfo("Uploaded invoice : " + invoiceName + " to sftp");           
+        }
+    }
 
     return ();
 }
