@@ -1,0 +1,41 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  annotations: {}
+  finalizers: []
+  labels:
+    app: "settlement-backend-mock"
+    integration: "settlement"
+  name: "settlement-backend-mock-deployment"
+  namespace: "default"
+  ownerReferences: []
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations: {}
+      finalizers: []
+      labels:
+        app: "settlement-backend-mock"
+        integration: "settlement"
+      ownerReferences: []
+    spec:
+      containers:
+      - args: []
+        command: []
+        env: []              
+        envFrom: []
+        image: "rajkumar/settlement-backend-mock:0.1.0"
+        imagePullPolicy: "Always"
+        name: "settlement-backend-mock-deployment"
+        ports:       
+        - containerPort: 8280
+          name: http            
+        volumeMounts: []
+      hostAliases: []
+      imagePullSecrets: []
+      initContainers: []
+      nodeSelector: {}
+      tolerations: []
+      volumes: []

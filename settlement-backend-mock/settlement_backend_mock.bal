@@ -5,7 +5,7 @@ import ballerina/math;
 import ballerina/io;
 
 endpoint http:Listener paymentListener {
-    port: 8286
+    port: 8280
 };
 
 @http:ServiceConfig {
