@@ -6,6 +6,7 @@ metadata:
   finalizers: []
   labels:
     app: "refund-backend-mock"
+    integration: "refund"
   name: "refund-backend-mock-deployment"
   namespace: "default"
   ownerReferences: []
@@ -17,6 +18,7 @@ spec:
       finalizers: []
       labels:
         app: "refund-backend-mock"
+        integration: "refund"
       ownerReferences: []
     spec:
       containers:
@@ -28,18 +30,24 @@ spec:
           - name: ecomm_backend_refund_sftp_port
             value: "22"    
           - name: ecomm_backend_refund_sftp_username
-            value: "ecomm0xxx" 
+            valueFrom:
+              secretKeyRef:
+                name: ecomm-back-end-sftp-secret
+                key: username 
           - name: ecomm_backend_refund_sftp_password
-            value: "ec0mmoxxx" 
+            valueFrom:
+                secretKeyRef:
+                  name: ecomm-back-end-sftp-secret
+                  key: password 
           - name: ecomm_backend_refund_sftp_path
-            value: "/Users/ecomm0xxx/projects/ecomm/sftp/refund"     
+            value: "/var/sftp/refund"   
           - name: ecomm_backend_refund_etl_interval
             value: "10000" 
           - name: ecomm_backend_refund_etl_initialDelay
             value: "500"                  
         envFrom: []
-        image: "rajkumar/refund-backend-mock:0.6.0"
-        imagePullPolicy: "IfNotPresent"
+        image: "rajkumar/refund-backend-mock:0.1.0"
+        imagePullPolicy: "Always"
         name: "refund-backend-mock-deployment"
         ports:             
         volumeMounts: []

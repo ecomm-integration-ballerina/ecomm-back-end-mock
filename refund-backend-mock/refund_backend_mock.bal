@@ -6,7 +6,6 @@ import ballerina/runtime;
 import ballerina/log;
 import ballerina/http;
 import ballerina/config;
-import ballerinax/kubernetes;
 
 int count;
 task:Timer? timer;
@@ -23,7 +22,7 @@ endpoint ftp:Client refundSFTPClient {
     }
 };
 
-function main(string... args) {
+public function main(string... args) {
 
     (function() returns error?) onTriggerFunction = generateRefund;
     function(error) onErrorFunction = handleError;
@@ -36,7 +35,7 @@ function main(string... args) {
 
     timer.start();
     // temp hack to keep the process running
-    runtime:sleep(20000000);
+    runtime:sleep(2000000000);
 }
 
 function generateRefund() returns error? {
@@ -125,5 +124,4 @@ function generateRefund() returns error? {
 
 function handleError(error e) {
     log:printError("Error in generating refund", err = e);
-    timer.stop();
 }
