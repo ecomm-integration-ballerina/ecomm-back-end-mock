@@ -76,7 +76,7 @@ function generateInvoice() returns error? {
     xml[] invoiceArray;
     foreach i in 1 ... numberOfInvoices {
         xml invoice = xml `<ZECOMMINVOICE SEGMENT="1">
-                    <ZBLCORD>DEUAT{{math:randomInRange(1,1000000)}}</ZBLCORD>
+                    <ZBLCORD>ballerina-{{math:randomInRange(1,10000)}}</ZBLCORD>
                     <VBELN>{{math:randomInRange(1,10000)}}</VBELN>
                     <DMBTR>{{math:ceil(math:random()*100)}}</DMBTR>
                     <WAERK>EUR</WAERK>
